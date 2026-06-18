@@ -1,23 +1,20 @@
 package com.redeprivada.sorting;
 
-public class Quicksort {
-    private Quicksort() {
-        /* This utility class should not be instantiated */
+public class Quicksort implements Sortable {
+    @Override
+    public void sort(int[] nums) {
+        sort(nums, 0, nums.length - 1);
     }
 
-    public static void quicksort(int[] nums) {
-        quicksort(nums, 0, nums.length - 1);
-    }
-
-    private static void quicksort(int[] nums, int begin, int end) {
+    private void sort(int[] nums, int begin, int end) {
         if (begin < end) {
             int pivot = partition(nums, begin, end);
-            quicksort(nums, begin, pivot - 1);
-            quicksort(nums, pivot + 1, end);
+            sort(nums, begin, pivot - 1);
+            sort(nums, pivot + 1, end);
         }
     }
 
-    private static int partition (int[] nums, int begin, int end) {
+    private int partition (int[] nums, int begin, int end) {
         int i = begin - 1;
         int pivot = nums[end];
         for (int j = begin; j < end; j++) {

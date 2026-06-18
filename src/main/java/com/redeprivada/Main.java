@@ -20,7 +20,7 @@ public class Main {
                 .toArray();
         if (logger.isInfoEnabled())
             logger.info(Arrays.toString(nums));
-        Quicksort.quicksort(nums);
+        new Quicksort().sort(nums);
         if (logger.isInfoEnabled())
             logger.info(Arrays.toString(nums));
     }
