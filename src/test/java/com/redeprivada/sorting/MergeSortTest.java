@@ -1,8 +1,8 @@
 package com.redeprivada.sorting;
 
-public class QuicksortTest extends SortingBaseTest {
+public class MergeSortTest extends SortingBaseTest {
     @Override
     protected Sortable getSorter() {
-        return new Quicksort();
+        return new MergeSort();
     }
 }

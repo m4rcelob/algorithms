@@ -1,6 +1,6 @@
 package com.redeprivada.sorting;
 
-public class Quicksort implements Sortable {
+public class QuickSort implements Sortable {
     @Override
     public void sort(int[] nums) {
         sort(nums, 0, nums.length - 1);

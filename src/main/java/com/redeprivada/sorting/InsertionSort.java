@@ -1,6 +1,6 @@
 package com.redeprivada.sorting;
 
-public class Insertionsort implements Sortable {
+public class InsertionSort implements Sortable {
     @Override
     public void sort(int[] nums) {
         for (int i = 1; i < nums.length; i++) {

@@ -1,6 +1,6 @@
 package com.redeprivada;
 
-import com.redeprivada.sorting.Quicksort;
+import com.redeprivada.sorting.QuickSort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
@@ -20,7 +18,7 @@ public class Main {
                 .toArray();
         if (logger.isInfoEnabled())
             logger.info(Arrays.toString(nums));
-        new Quicksort().sort(nums);
+        new QuickSort().sort(nums);
         if (logger.isInfoEnabled())
             logger.info(Arrays.toString(nums));
     }

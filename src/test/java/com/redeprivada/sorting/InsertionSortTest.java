@@ -1,9 +1,9 @@
 package com.redeprivada.sorting;
 
-public class InsertionsortTest extends SortingBaseTest {
+public class InsertionSortTest extends SortingBaseTest {
 
     @Override
     protected Sortable getSorter() {
-        return new Insertionsort();
+        return new InsertionSort();
     }
 }
