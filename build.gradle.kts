@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    kotlin("jvm")
 }
 
 group = "com.redeprivada"
@@ -10,6 +11,7 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib"))
     implementation(libs.slf4j.api)
     // Logback Engine
     implementation(libs.logback)
@@ -21,4 +23,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(21)
 }
