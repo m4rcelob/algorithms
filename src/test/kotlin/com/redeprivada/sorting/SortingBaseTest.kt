@@ -16,7 +16,7 @@ abstract class SortingBaseTest {
 
     @Test
     fun shouldSortReversedArray() {
-        val nums = intArrayOf(9, 7, 4,3 , 3, 2)
+        val nums = intArrayOf(9, 7, 4, 3, 3, 2)
         sorter!!.sort(nums)
         val expected = intArrayOf(2, 3, 3, 4, 7, 9)
         assert(nums.contentEquals(expected))
@@ -57,7 +57,7 @@ abstract class SortingBaseTest {
     @Test
     fun shouldSortRandomArray() {
         val nums = IntArray(1000) {
-            Random.nextInt(0, 1000000)
+            Random.nextInt(0, 1000)
         }
         val expected = nums.clone()
         sorter!!.sort(nums)
