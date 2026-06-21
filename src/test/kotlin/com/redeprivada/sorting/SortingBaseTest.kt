@@ -16,9 +16,9 @@ abstract class SortingBaseTest {
 
     @Test
     fun shouldSortReversedArray() {
-        val nums = intArrayOf(9, 7, 4, 3, 2)
+        val nums = intArrayOf(9, 7, 4,3 , 3, 2)
         sorter!!.sort(nums)
-        val expected = intArrayOf(2, 3, 4, 7, 9)
+        val expected = intArrayOf(2, 3, 3, 4, 7, 9)
         assert(nums.contentEquals(expected))
     }
 

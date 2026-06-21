@@ -5,18 +5,18 @@ class QuickSort : Sortable {
         sort(nums, 0, nums.size - 1)
     }
 
-    private fun sort(nums: IntArray, begin: Int, end: Int) {
-        if (begin < end) {
-            val pivot = partition(nums, begin, end)
-            sort(nums, begin, pivot - 1)
+    private fun sort(nums: IntArray, start: Int, end: Int) {
+        if (start < end) {
+            val pivot = partition(nums, start, end)
+            sort(nums, start, pivot - 1)
             sort(nums, pivot + 1, end)
         }
     }
 
-    private fun partition(nums: IntArray, begin: Int, end: Int): Int {
-        var i = begin - 1
+    private fun partition(nums: IntArray, start: Int, end: Int): Int {
+        var i = start - 1
         val pivot = nums[end]
-        for (j in begin..<end) {
+        for (j in start..<end) {
             if (nums[j] < pivot) {
                 i++
                 val temp = nums[i]

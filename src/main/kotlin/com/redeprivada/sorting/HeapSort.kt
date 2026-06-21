@@ -13,15 +13,15 @@ class HeapSort : Sortable {
         }
     }
 
-    private fun maxheapify(nums: IntArray, heapsize: Int, i: Int) {
-        val l = (i + 1) * 2 - 1
-        val r = (i + 1) * 2
-        var largest = i
-        if (l < heapsize && nums[l] > nums[i]) largest = l
+    private fun maxheapify(nums: IntArray, heapsize: Int, nodeIndex: Int) {
+        val l = (nodeIndex + 1) * 2 - 1
+        val r = (nodeIndex + 1) * 2
+        var largest = nodeIndex
+        if (l < heapsize && nums[l] > nums[nodeIndex]) largest = l
         if (r < heapsize && nums[r] > nums[largest]) largest = r
-        if (largest != i) {
-            val temp = nums[i]
-            nums[i] = nums[largest]
+        if (largest != nodeIndex) {
+            val temp = nums[nodeIndex]
+            nums[nodeIndex] = nums[largest]
             nums[largest] = temp
             maxheapify(nums, heapsize, largest)
         }
