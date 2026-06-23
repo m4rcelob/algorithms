@@ -11,26 +11,14 @@ class Dijkstra(val graph: LinkedHashMap<Int, Set<Pair<Int, Int>>>) {
      * @return The list of node keys to reach [destination], including the first and the last nodes.
      */
     fun shortestPath(destination: Int): List<Int> {
-        if (graph.isEmpty())
-            return emptyList()
+        destinationShortCircuit(destination)?.let { return it }
 
         val origin = graph.firstEntry().key
-        if (origin == destination)
-            return listOf(destination)
-
-        if (!graph.values.flatten().map { it.first }.contains(destination))
-            return emptyList()
-
         val visitedNodes = mutableListOf<Int>()
         val costs = mutableMapOf<Int, Int>()
         val parents = mutableMapOf<Int, Int>()
 
         costs[origin] = 0
-        // Set costs for origin's neighbors
-        graph[origin]?.forEach { neighbor ->
-            costs[neighbor.first] = neighbor.second
-        }
-
         var node = origin
         while(node != null) {
             val neighbors = graph[node]
@@ -49,15 +37,28 @@ class Dijkstra(val graph: LinkedHashMap<Int, Set<Pair<Int, Int>>>) {
         }
 
         val path = ArrayDeque<Int>()
-        path.addFirst(destination)
-        var parent = parents[destination]
-        while (parent != null) {
-            path.addFirst(parent)
-            parent = parents[parent]
+        var pathNode: Int? = destination
+        while (pathNode != null) {
+            path.addFirst(pathNode)
+            pathNode = parents[pathNode]
         }
 
         return path
     }
 
+    /**
+     * If we don't need to process the graph to get the shortest path to [destination].
+     */
+    private fun destinationShortCircuit(destination: Int): List<Int>? {
+        if (graph.isEmpty())
+            return emptyList()
 
+        if (graph.firstEntry().key == destination)
+            return listOf(destination)
+
+        if (!graph.values.flatten().map { it.first }.contains(destination))
+            return emptyList()
+
+        return null
+    }
 }
