@@ -1,4 +1,4 @@
-package com.redeprivada.sorting
+package com.m4rcelob.sorting
 
 class MergeSortTest : SortingBaseTest() {
     override fun getSorter(): Sortable {

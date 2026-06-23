@@ -1,6 +1,6 @@
-package com.redeprivada;
+package com.m4rcelob;
 
-import com.redeprivada.sorting.QuickSort;
+import com.m4rcelob.sorting.QuickSort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package com.redeprivada.sorting
+package com.m4rcelob.sorting
 
 class InsertionSort : Sortable {
     override fun sort(nums: IntArray) {

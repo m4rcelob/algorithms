@@ -1,4 +1,4 @@
-package com.redeprivada.sorting
+package com.m4rcelob.sorting
 
 class CountingSort(val k: Int): Sortable {
     override fun sort(nums: IntArray) {
