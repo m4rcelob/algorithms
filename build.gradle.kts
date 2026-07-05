@@ -3,7 +3,7 @@ plugins {
     kotlin("jvm")
 }
 
-group = "com.redeprivada"
+group = "com.m4rcelob"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -18,6 +18,7 @@ dependencies {
 
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(libs.kotest.assertions)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
