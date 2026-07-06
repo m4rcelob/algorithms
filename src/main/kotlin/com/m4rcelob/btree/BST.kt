@@ -1,6 +1,5 @@
 package com.m4rcelob.btree
 
-
 data class Node<T: Comparable<T>> (
     var p: Node<T>? = null,
     var left: Node<T>? = null,
@@ -18,16 +17,24 @@ data class Node<T: Comparable<T>> (
     }
 
     override fun toString(): String {
-        return "Node($key)"
+        return "n$key"
     }
 }
 
-class BST <T: Comparable<T>> (val root: Node<T>) {
+class BST <T: Comparable<T>> (var root: Node<T>?) {
     fun inorderTreeWalk(root: Node<T>?, block: (current: Node<T>?) -> Unit = {}) {
         if (root != null) {
             inorderTreeWalk(root.left, block)
             block(root)
             inorderTreeWalk(root.right, block)
+        }
+    }
+
+    fun preorderTreeWalk(root: Node<T>?, block: (current: Node<T>?) -> Unit = {}) {
+        if (root != null) {
+            block(root)
+            preorderTreeWalk(root.left, block)
+            preorderTreeWalk(root.right, block)
         }
     }
 
@@ -95,5 +102,60 @@ class BST <T: Comparable<T>> (val root: Node<T>) {
             }
             parent
         }
+    }
+
+    fun treeInsert(tree: BST<T>, key: T) {
+        var pointer: Node<T>? = tree.root
+        var parent: Node<T>? = null
+
+        while (pointer != null) {
+            parent = pointer
+            pointer = if (key < pointer.key)
+                pointer.left
+            else
+                pointer.right
+        }
+        val inserted = Node(parent, null, null, key)
+        if (parent == null)
+            tree.root = inserted
+        else if (inserted.key < parent.key)
+            parent.left = inserted
+        else
+            parent.right = inserted
+    }
+
+    private fun transplant(tree: BST<T>, destination: Node<T>, subtree: Node<T>?) {
+        if (destination.p == null)
+            tree.root = subtree
+        else if (destination == destination.p?.left)
+            destination.p?.left = subtree
+        else
+            destination.p?.right = subtree
+        if (subtree != null)
+            subtree.p = destination.p
+    }
+
+    fun treeDelete(tree: BST<T>, node: Node<T>) {
+        if (node.left == null)
+            transplant(tree, node, node.right)
+        else if (node.right == null)
+            transplant(tree, node, node.left)
+        else {
+            val successor = treeMinimum(node.right) ?: error("Node must have a successor, because right != null")
+            if (successor != node.right) {
+                transplant(tree, successor, successor.right)
+                successor.right = node.right
+                successor.right?.p = successor
+            }
+            transplant(tree, node, successor)
+            successor.left = node.left
+            successor.left?.p = successor
+        }
+    }
+
+    override fun toString(): String {
+        val keys = mutableListOf<T>()
+        inorderTreeWalk(root, { node -> node?.let { keys.add(node.key) }})
+        return keys.joinToString(", ")
     }
 }
