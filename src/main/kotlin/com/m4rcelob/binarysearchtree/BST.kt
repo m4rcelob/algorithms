@@ -1,4 +1,4 @@
-package com.m4rcelob.btree
+package com.m4rcelob.binarysearchtree
 
 data class Node<T: Comparable<T>> (
     var p: Node<T>? = null,
@@ -17,11 +17,61 @@ data class Node<T: Comparable<T>> (
     }
 
     override fun toString(): String {
-        return "n$key"
+        return "n($key)"
     }
 }
 
 class BST <T: Comparable<T>> (var root: Node<T>?) {
+    /**
+     * Keys in heap-style
+     */
+    constructor(vararg keys: T?): this(root = null) {
+        if (keys.isEmpty())
+            return
+        val rootKey =  keys[0]
+        root = rootKey?.let { Node(key = it) } ?: return
+
+        // Pair(key index, node)
+        val toBeInserted = mutableListOf(Pair(0, root!!))
+        while (toBeInserted.isNotEmpty()) {
+            val (index, parent) = toBeInserted.removeFirst()
+
+            val leftKeyIndex = index * 2 + 1
+            if (leftKeyIndex >= keys.size)
+                continue
+
+            val leftKey = keys[leftKeyIndex]
+            val left = leftKey?.let { Node(p = parent, key = it) }
+            parent.left = left
+            if (left != null)
+                toBeInserted.add(Pair(leftKeyIndex, left))
+
+            val rightKeyIndex = leftKeyIndex + 1
+            if (rightKeyIndex >= keys.size)
+                continue
+
+            val rightKey = keys[rightKeyIndex]
+            val right = rightKey?.let { Node(p = parent, key = it) }
+            parent.right = right
+            if (right != null)
+                toBeInserted.add(Pair(rightKeyIndex, right))
+        }
+    }
+
+    fun isValid(): Boolean {
+        return isValid(root, null, null)
+    }
+
+    private fun isValid(root: Node<T>?, min: T?, max: T?): Boolean {
+        if (root == null)
+            return true
+        if ((min != null && root.key < min) ||
+            (max != null && root.key > max)) {
+            return false
+        }
+        return isValid(root.left, min, root.key) && isValid(root.right, root.key, max)
+    }
+
     fun inorderTreeWalk(root: Node<T>?, block: (current: Node<T>?) -> Unit = {}) {
         if (root != null) {
             inorderTreeWalk(root.left, block)
@@ -35,6 +85,19 @@ class BST <T: Comparable<T>> (var root: Node<T>?) {
             block(root)
             preorderTreeWalk(root.left, block)
             preorderTreeWalk(root.right, block)
+        }
+    }
+
+    fun breadthFirstWalk(block: (current: Node<T>?) -> Unit = {}) {
+        val toBeVisited = mutableListOf(root)
+
+        while (toBeVisited.isNotEmpty()) {
+            val node = toBeVisited.removeFirst()
+            block(node)
+            if (node != null) {
+                toBeVisited.add(node.left)
+                toBeVisited.add(node.right)
+            }
         }
     }
 
@@ -154,8 +217,25 @@ class BST <T: Comparable<T>> (var root: Node<T>?) {
     }
 
     override fun toString(): String {
-        val keys = mutableListOf<T>()
-        inorderTreeWalk(root, { node -> node?.let { keys.add(node.key) }})
+        val keys = mutableListOf<T?>()
+        breadthFirstWalk { node ->
+            keys.add(node?.key)
+        }
+        // Remove trailing nulls
+        while (keys.isNotEmpty()) {
+            if (keys.last() == null)
+                keys.removeLast()
+            else
+                break
+        }
         return keys.joinToString(", ")
+    }
+
+    fun orderedKeys(): List<T?> {
+        val keys = mutableListOf<T?>()
+        inorderTreeWalk(root) { node ->
+            keys.add(node?.key)
+        }
+        return keys
     }
 }

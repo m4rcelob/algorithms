@@ -1,9 +1,47 @@
-package com.m4rcelob.btree
+package com.m4rcelob.binarysearchtree
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
 class BSTTest {
+
+    /**
+     *             6
+     *           /   \
+     *          /     \
+     *         /       \
+     *        1         9
+     *      /   \      /  \
+     *     0     2    8    10
+     *               /      \
+     *              7        11
+     */
+    @Test
+    fun shouldBuildWithKeys() {
+        val tree = BST(6, 1, 9, 0, 2, 8, 10, null, null, null, null, 7, null, null, 11)
+        tree.root?.key shouldBe 6
+        tree.root?.left?.key shouldBe 1
+        tree.root?.right?.key shouldBe 9
+        tree.root?.right?.right?.right?.key shouldBe 11
+        tree.isValid() shouldBe true
+        tree.toString() shouldBe "6, 1, 9, 0, 2, 8, 10, null, null, null, null, 7, null, null, 11"
+    }
+
+    /**
+     *               3
+     *             /   \
+     *            /     \
+     *           /       \
+     *          3         3
+     *            \      /
+     *             3    3
+     */
+    @Test
+    fun shouldBeValid() {
+        val tree = BST(3, 3, 3, null, 3, 3, null)
+        tree.isValid() shouldBe true
+    }
+
     @Test
     fun shouldWalkInOrder() {
         val tree = testTree()
@@ -104,15 +142,15 @@ class BSTTest {
 
         /**
          * At this point:
-         *                         15
-         *                       /   \
-         *                      /     \
-         *                     /       \
-         *                    6         18
-         *                  /   \      /  \
-         *                 4     13   17  20
-         *               /
-         *              2
+         *               15
+         *             /   \
+         *            /     \
+         *           /       \
+         *          6         18
+         *        /   \      /  \
+         *       4     13   17  20
+         *     /
+         *    2
          */
         tree.treeDelete(tree, tree.root!!)
         tree.root?.key shouldBe 17
@@ -122,18 +160,31 @@ class BSTTest {
         tree.root?.right?.right?.key shouldBe 20
     }
 
+    @Test
+    fun shouldOrderAscending() {
+        val tree = testTree()
+        tree.orderedKeys().joinToString(", ") shouldBe "2, 3, 4, 6, 7, 9, 13, 15, 17, 18, 20"
+    }
+
+    @Test
+    fun shouldPrintInHeapStyle() {
+        val tree = testTree()
+        tree.toString() shouldBe "15, 6, 18, 3, 7, 17, 20, 2, 4, null, 13, null, null, null, null, null, null, null, null, 9"
+    }
+
+
     /**
-     *                         15
-     *                       /   \
-     *                      /     \
-     *                     /       \
-     *                    6         18
-     *                  /   \      /  \
-     *                 3     7    17  20
-     *               /  \     \
-     *              2    4    13
-     *                       /
-     *                      9
+     *               15
+     *             /   \
+     *            /     \
+     *           /       \
+     *          6         18
+     *        /   \      /  \
+     *       3     7    17  20
+     *     /  \     \
+     *    2    4    13
+     *             /
+     *            9
      */
     private fun testTree(): BST<Int> {
         val n2 = Node(null, null, null, 2)
