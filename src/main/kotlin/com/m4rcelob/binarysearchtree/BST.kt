@@ -28,7 +28,7 @@ class BST <T: Comparable<T>> (var root: Node<T>?) {
     constructor(vararg keys: T?): this(root = null) {
         if (keys.isEmpty())
             return
-        val rootKey =  keys[0]
+        val rootKey = keys[0]
         root = rootKey?.let { Node(key = it) } ?: return
 
         // Pair(key index, node)
