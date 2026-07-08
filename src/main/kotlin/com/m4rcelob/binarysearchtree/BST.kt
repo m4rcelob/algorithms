@@ -22,56 +22,6 @@ data class Node<T: Comparable<T>> (
 }
 
 class BST <T: Comparable<T>> (var root: Node<T>?) {
-    /**
-     * Keys in heap-style
-     */
-    constructor(vararg keys: T?): this(root = null) {
-        if (keys.isEmpty())
-            return
-        val rootKey = keys[0]
-        root = rootKey?.let { Node(key = it) } ?: return
-
-        // Pair(key index, node)
-        val toBeInserted = mutableListOf(Pair(0, root!!))
-        while (toBeInserted.isNotEmpty()) {
-            val (index, parent) = toBeInserted.removeFirst()
-
-            val leftKeyIndex = index * 2 + 1
-            if (leftKeyIndex >= keys.size)
-                continue
-
-            val leftKey = keys[leftKeyIndex]
-            val left = leftKey?.let { Node(p = parent, key = it) }
-            parent.left = left
-            if (left != null)
-                toBeInserted.add(Pair(leftKeyIndex, left))
-
-            val rightKeyIndex = leftKeyIndex + 1
-            if (rightKeyIndex >= keys.size)
-                continue
-
-            val rightKey = keys[rightKeyIndex]
-            val right = rightKey?.let { Node(p = parent, key = it) }
-            parent.right = right
-            if (right != null)
-                toBeInserted.add(Pair(rightKeyIndex, right))
-        }
-    }
-
-    fun isValid(): Boolean {
-        return isValid(root, null, null)
-    }
-
-    private fun isValid(root: Node<T>?, min: T?, max: T?): Boolean {
-        if (root == null)
-            return true
-        if ((min != null && root.key < min) ||
-            (max != null && root.key > max)) {
-            return false
-        }
-        return isValid(root.left, min, root.key) && isValid(root.right, root.key, max)
-    }
-
     fun inorderTreeWalk(root: Node<T>?, block: (current: Node<T>?) -> Unit = {}) {
         if (root != null) {
             inorderTreeWalk(root.left, block)
