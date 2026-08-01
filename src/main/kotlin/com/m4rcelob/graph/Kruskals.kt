@@ -16,9 +16,9 @@ class Kruskals<T>: MSTAlgorithm<T> {
         for (e in edges) {
             if (tree.size == graph.size)
                 break
-            if (ds.find(e.a) != ds.find(e.b)) {
-                ds.union(e.a, e.b)
-                tree.addUndirectedEdge(e.a.value, e.b.value, e.weight)
+            if (ds.find(e.from) != ds.find(e.to)) {
+                ds.union(e.from, e.to)
+                tree.addUndirectedEdge(e.from.value, e.to.value, e.weight)
             }
         }
 

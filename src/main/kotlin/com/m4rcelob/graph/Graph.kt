@@ -2,7 +2,7 @@ package com.m4rcelob.graph
 
 class Node<T>(val value: T)
 
-class Edge<T>(val a: Node<T>, val b: Node<T>, val weight: Int)
+class Edge<T>(val from: Node<T>, val to: Node<T>, val weight: Int)
 
 class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: MutableSet<Edge<T>> = mutableSetOf()) {
     val size: Int
@@ -10,13 +10,13 @@ class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: Mutab
     fun isEmpty(): Boolean
         = nodes.isEmpty()
 
-    fun getNeighbors(node: Node<T>): Set<Pair<Node<T>, Int>> {
+    fun getUndirectedNeighbors(node: Node<T>): Set<Pair<Node<T>, Int>> {
         val neighbors = HashSet<Pair<Node<T>, Int>>()
         for (e in edges) {
-            if (e.a == node)
-                neighbors.add(Pair(e.b, e.weight))
-            else if (e.b == node)
-                neighbors.add(Pair(e.a, e.weight))
+            if (e.from == node)
+                neighbors.add(Pair(e.to, e.weight))
+            else if (e.to == node)
+                neighbors.add(Pair(e.from, e.weight))
         }
         return neighbors
     }

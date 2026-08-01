@@ -29,7 +29,7 @@ class Prims<T>: MSTAlgorithm<T> {
                 tree.addUndirectedEdge(previousInsertedNode, node, nodeAndWeight.second)
             previousInsertedNode = node
 
-            for (neighbor in graph.getNeighbors(node)) {
+            for (neighbor in graph.getUndirectedNeighbors(node)) {
                 if (!tree.nodes.contains(neighbor.first))
                     queue.add(neighbor)
             }
