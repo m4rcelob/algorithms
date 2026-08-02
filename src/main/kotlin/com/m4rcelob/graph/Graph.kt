@@ -1,8 +1,12 @@
 package com.m4rcelob.graph
 
-class Node<T>(val value: T)
+class Node<T>(val value: T) {
+    override fun toString(): String = "N[$value]"
+}
 
-class Edge<T>(val from: Node<T>, val to: Node<T>, val weight: Int)
+class Edge<T>(val from: Node<T>, val to: Node<T>, val weight: Int = 0) {
+    override fun toString(): String = "$from -{$weight}-> $to"
+}
 
 class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: MutableSet<Edge<T>> = mutableSetOf()) {
     val size: Int
@@ -19,6 +23,14 @@ class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: Mutab
                 neighbors.add(Pair(e.from, e.weight))
         }
         return neighbors
+    }
+
+    fun addDirectedEdge(from: T, to: T, weight: Int = 0) {
+        val fromNode: Node<T> = nodes.firstOrNull { it.value == from } ?:
+            Node(from).apply { nodes.add(this) }
+        val toNode = nodes.firstOrNull { it.value == to } ?:
+            Node(to).apply { nodes.add(this) }
+        edges.add(Edge(fromNode, toNode, weight))
     }
 
     fun addUndirectedEdge(a: T, b: T, weight: Int) {
