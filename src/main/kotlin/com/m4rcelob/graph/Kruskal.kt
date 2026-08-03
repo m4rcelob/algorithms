@@ -3,7 +3,7 @@ package com.m4rcelob.graph
 /**
  * Kruskal's algorithm for minimum spanning tree (MST)
  */
-class Kruskals<T>: MSTAlgorithm<T> {
+class Kruskal<T>: MSTAlgorithm<T> {
     override fun minimumSpanningTree(graph: Graph<T>): Graph<T> {
         if (graph.size <= 1)
             return graph

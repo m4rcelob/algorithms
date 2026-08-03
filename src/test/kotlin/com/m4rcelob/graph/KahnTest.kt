@@ -3,8 +3,8 @@ package com.m4rcelob.graph
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 
-class KahnsTest {
-    private val topologicalSorter = Kahns<Int>()
+class KahnTest {
+    private val topologicalSorter = Kahn<Int>()
 
     @Test
     fun shouldSortEmptyGraph() {
@@ -23,11 +23,13 @@ class KahnsTest {
     }
 
     @Test
-    fun shouldNotFindPathForDisconnectedGraph() {
+    fun shouldFindPathForDisconnectedGraph() {
         val graph = Graph<Int>()
         graph.nodes.addAll(setOf(Node(1), Node(2), Node(3)))
         graph.addDirectedEdge(1, 2, 1)
-        topologicalSorter.sort(graph).isEmpty() shouldBe true
+        val dag = topologicalSorter.sort(graph)
+        dag.nodes.size shouldBe 3
+        dag.edges.size shouldBe 1
     }
 
     @Test
@@ -56,7 +58,7 @@ class KahnsTest {
 
         val dag = topologicalSorter.sort(graph)
 
-        dag.size shouldBe 4
-        dag.edges.size shouldBe 3
+        dag.size shouldBe 0
+        dag.edges.size shouldBe 0
     }
 }

@@ -1,7 +1,7 @@
 package com.m4rcelob.graph
 
-class KruskalsTest: MinimumSpanningTreeBaseTest() {
+class PrimTest: MinimumSpanningTreeBaseTest() {
     override fun getAlgorithm(): MSTAlgorithm<Int> {
-        return Kruskals()
+        return Prim()
     }
 }

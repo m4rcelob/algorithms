@@ -1,7 +1,6 @@
-package com.m4rcelob.dijkstra
+package com.m4rcelob.graph
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 class DijkstraTest {
@@ -9,7 +8,7 @@ class DijkstraTest {
     fun shouldFindShortestPathForEmptyGraph() {
         val graph = LinkedHashMap<Int, Set<Pair<Int, Int>>>()
         val dijkstra = Dijkstra(graph)
-        assertTrue(dijkstra.shortestPath(0).isEmpty())
+        Assertions.assertTrue(dijkstra.shortestPath(0).isEmpty())
     }
 
     @Test
@@ -17,7 +16,7 @@ class DijkstraTest {
         val graph = LinkedHashMap<Int, Set<Pair<Int, Int>>>()
         graph[1] = emptySet()
         val dijkstra = Dijkstra(graph)
-        assertEquals(1, dijkstra.shortestPath(1).first())
+        Assertions.assertEquals(1, dijkstra.shortestPath(1).first())
     }
 
     @Test
@@ -26,7 +25,7 @@ class DijkstraTest {
         graph[1] = setOf(Pair(2, 1))
         graph[3] = emptySet()
         val dijkstra = Dijkstra(graph)
-        assertTrue(dijkstra.shortestPath(3).isEmpty())
+        Assertions.assertTrue(dijkstra.shortestPath(3).isEmpty())
     }
 
     @Test
@@ -34,7 +33,7 @@ class DijkstraTest {
         val graph = LinkedHashMap<Int, Set<Pair<Int, Int>>>()
         graph[1] = setOf(Pair(2, 1))
         val dijkstra = Dijkstra(graph)
-        assertTrue(dijkstra.shortestPath(3).isEmpty())
+        Assertions.assertTrue(dijkstra.shortestPath(3).isEmpty())
     }
 
     @Test
@@ -45,10 +44,10 @@ class DijkstraTest {
         graph[3] = setOf(Pair(2, 1), Pair(4, 6))
         val dijkstra = Dijkstra(graph)
         val path = dijkstra.shortestPath(4)
-        assertEquals(1, path.first())
-        assertEquals(3, path[1])
-        assertEquals(2, path[2])
-        assertEquals(4, path.last())
+        Assertions.assertEquals(1, path.first())
+        Assertions.assertEquals(3, path[1])
+        Assertions.assertEquals(2, path[2])
+        Assertions.assertEquals(4, path.last())
     }
 
     @Test
@@ -62,12 +61,12 @@ class DijkstraTest {
 
         val dijkstra = Dijkstra(graph)
         val path = dijkstra.shortestPath(6)
-        assertEquals(1, path[0])
-        assertEquals(2, path[1])
-        assertEquals(3, path[2])
-        assertEquals(5, path[3])
-        assertEquals(4, path[4])
-        assertEquals(6, path.last())
+        Assertions.assertEquals(1, path[0])
+        Assertions.assertEquals(2, path[1])
+        Assertions.assertEquals(3, path[2])
+        Assertions.assertEquals(5, path[3])
+        Assertions.assertEquals(4, path[4])
+        Assertions.assertEquals(6, path.last())
     }
 
 }

@@ -5,7 +5,7 @@ import java.util.*
 /**
  * Prim's algorithm for minimum spanning tree (MST)
  */
-class Prims<T>: MSTAlgorithm<T> {
+class Prim<T>: MSTAlgorithm<T> {
     override fun minimumSpanningTree(graph: Graph<T>): Graph<T> {
         if (graph.isEmpty())
             return Graph()

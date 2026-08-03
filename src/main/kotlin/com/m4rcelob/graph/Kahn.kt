@@ -3,41 +3,44 @@ package com.m4rcelob.graph
 /**
  * Kahn's algorithm for topological sorting
  */
-class Kahns<T> {
+class Kahn<T> {
     fun sort(graph: Graph<T>): Graph<T> {
         if (graph.size <= 1)
             return graph
 
         val indegree = HashMap<Node<T>, Int>()
-        val adjacency = HashMap<Node<T>, MutableSet<Node<T>>>()
+        val adjacency = HashMap<Node<T>, MutableSet<Pair<Node<T>, Int>>>()
         for (n in graph.nodes) {
             indegree[n] = 0
             adjacency[n] = mutableSetOf()
         }
         for (e in graph.edges) {
             indegree[e.to] = indegree.getValue(e.to) + 1
-            adjacency.getValue(e.from).add(e.to)
+            adjacency.getValue(e.from).add(Pair(e.to, e.weight))
         }
 
-        val queue = ArrayDeque<Node<T>>()
+        // triple of parent, node and weight
+        val queue = ArrayDeque<Triple<Node<T>?, Node<T>, Int>>()
         for ((node, count) in indegree) {
             if (count == 0)
-                queue.addLast(node)
+                queue.addLast(Triple(null, node, 0))
         }
 
         val dag = Graph<T>()
-        var lastNode: Node<T>? = null
         while (queue.isNotEmpty()) {
-            val node = queue.removeFirst()
+            val edge = queue.removeFirst()
+            val parent = edge.first
+            val node = edge.second
+            val weight = edge.third
+
             dag.nodes.add(node)
-            if (lastNode != null)
-                dag.edges.add(Edge(lastNode, node))
-            for (neighbor in adjacency.getValue(node)) {
+            if (parent != null)
+                dag.edges.add(Edge(parent, node, weight))
+            for ((neighbor, weight) in adjacency.getValue(node)) {
                 indegree[neighbor] = indegree.getValue(neighbor) - 1
                 if (indegree.getValue(neighbor) == 0)
-                    queue.addLast(neighbor)
+                    queue.addLast(Triple(node, neighbor, weight))
             }
-            lastNode = node
         }
 
         return if (dag.size == graph.size) dag else Graph()

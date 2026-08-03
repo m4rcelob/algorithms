@@ -1,4 +1,7 @@
-package com.m4rcelob.dijkstra
+package com.m4rcelob.graph
+
+import java.util.PriorityQueue
+import kotlin.collections.ArrayDeque
 
 /**
  * Implementation of classic algorithm for finding the shortest path in a weighted graph.
@@ -14,26 +17,32 @@ class Dijkstra(val graph: LinkedHashMap<Int, Set<Pair<Int, Int>>>) {
         destinationShortCircuit(destination)?.let { return it }
 
         val origin = graph.firstEntry().key
-        val visitedNodes = mutableListOf<Int>()
+        val visited = HashSet<Int>()
         val costs = mutableMapOf<Int, Int>()
         val parents = mutableMapOf<Int, Int>()
+        val queue = PriorityQueue<Pair<Int, Int>>(compareBy { it.second } )
 
         costs[origin] = 0
-        var node = origin
-        while(node != null) {
-            val neighbors = graph[node]
+        queue.add(Pair(origin, 0))
 
-            neighbors?.forEach { (neighbor, cost) ->
-                require(cost >= 0) { "The cost can not be negative" }
-                val costFromStartingNode = (costs[node] ?: 0) + cost
-                val minCost = costs[neighbor] ?: Int.MAX_VALUE
-                if (costFromStartingNode <= minCost) {
-                    costs[neighbor] = costFromStartingNode
+        while (queue.isNotEmpty()) {
+            val closest = queue.poll()
+            val node = closest.first
+            val nodeCost = closest.second
+
+            if (visited.contains(node))
+                continue
+            visited.add(node)
+
+            for ((neighbor, weight) in graph[node] ?: emptySet()) {
+                require(weight >= 0) { "The edge weight can not be negative" }
+                val neighborCost = costs[neighbor] ?: Int.MAX_VALUE
+                if (neighborCost > nodeCost + weight) {
+                    costs[neighbor] = nodeCost + weight
                     parents[neighbor] = node
+                    queue.add(Pair(neighbor, costs.getValue(neighbor)))
                 }
             }
-            visitedNodes.add(node)
-            node = costs.filter { !visitedNodes.contains(it.key) }.minByOrNull { it.value }?.key
         }
 
         val path = ArrayDeque<Int>()
