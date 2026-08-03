@@ -1,10 +1,10 @@
 package com.m4rcelob.graph
 
-class Node<T>(val value: T) {
+data class Node<T>(val value: T) {
     override fun toString(): String = "N[$value]"
 }
 
-class Edge<T>(val from: Node<T>, val to: Node<T>, val weight: Int = 0) {
+data class Edge<T>(val from: Node<T>, val to: Node<T>, val weight: Int = 0) {
     override fun toString(): String = "$from -{$weight}-> $to"
 }
 
@@ -33,6 +33,17 @@ class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: Mutab
         edges.add(Edge(fromNode, toNode, weight))
     }
 
+    fun addDirectedEdge(from: Node<T>, to: Node<T>, weight: Int = 0) {
+        nodes.add(from)
+        nodes.add(to)
+        edges.add(Edge(from, to, weight))
+    }
+
+    fun addDirectedEdges(edges: Array<Triple<T, T, Int>>) {
+        for ((origin, destination, weight) in edges)
+            addDirectedEdge(origin, destination, weight)
+    }
+
     fun addUndirectedEdge(a: T, b: T, weight: Int) {
         val nodeA: Node<T> = nodes.firstOrNull { it.value == a } ?:
             Node(a).apply { nodes.add(this) }
@@ -43,10 +54,8 @@ class Graph<T>(val nodes: MutableSet<Node<T>> = mutableSetOf(), val edges: Mutab
     }
 
     fun addUndirectedEdge(a: Node<T>, b: Node<T>, weight: Int) {
-        if (!nodes.contains(a))
-            nodes.add(a)
-        if (!nodes.contains(b))
-            nodes.add(b)
+        nodes.add(a)
+        nodes.add(b)
         edges.add(Edge(a, b, weight))
         edges.add(Edge(b, a, weight))
     }
