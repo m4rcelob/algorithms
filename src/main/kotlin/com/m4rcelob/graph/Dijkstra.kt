@@ -45,8 +45,8 @@ class Dijkstra<T>(val graph: Graph<T>) {
                 if (neighborCost > nodeCost + weight) {
                     costs[neighbor] = nodeCost + weight
                     parents[neighbor] = node
-                    queue.add(Pair(neighbor, costs.getValue(neighbor)))
                 }
+                queue.add(Pair(neighbor, costs.getValue(neighbor)))
             }
         }
 
